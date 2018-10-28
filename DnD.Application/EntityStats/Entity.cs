@@ -1,4 +1,7 @@
-﻿using DnD.Application.EntityStats.AbilityStats;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+using DnD.Application.EntityStats.AbilityStats;
+using DnD.Application.Items;
 
 namespace DnD.Application.EntityStats
 {
@@ -14,6 +17,15 @@ namespace DnD.Application.EntityStats
 		public Intelligence Intelligence { get; set; }
 		public Wisdom Wisdom { get; set; }
 		public Charisma Charisma { get; set; }
+		public CoinPurse Purse { get; set; }
+
+		//[XmlArray("Weapons")]
+		//[XmlArrayItem("Weapon")]
+		public List<Weapon> Weapons { get; set; }
+
+		//[XmlArray("Ammunition")]
+		//[XmlArrayItem("Ammo")]
+		public List<Ammunition> Ammunition { get; set; }
 
 		public Entity()
 		{
@@ -23,10 +35,16 @@ namespace DnD.Application.EntityStats
 			Intelligence = new Intelligence();
 			Wisdom = new Wisdom();
 			Charisma = new Charisma();
+			Weapons = new List<Weapon>();
+			Ammunition = new List<Ammunition>();
+			Purse = new CoinPurse();
 		}
 
 		public Entity(int strength, int dex, int con, int intelligence,int wisdom, int charisma)
 		{
+			Ammunition = new List<Ammunition>();
+			Purse = new CoinPurse();
+			Weapons = new List<Weapon>();
 			Strength = new Strength(){Score=strength};
 			Dexterity = new Dexterity(){Score=dex};
 			Constitution = new Constitution(){Score=con};

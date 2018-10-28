@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 using DnD.Application.EntityStats;
 using System.IO;
 using System.Xml.Serialization;
+using DnD.Application.Libraries;
 
 namespace DnD.Application.Game
 {
 	public class GameManager
 	{
 		public CharacterManager CharacterManager;
-
+		public NPCManager NpcManager;
+		public List<WeaponLibrary> WeaponLibraries;
 		public GameManager()
 		{
+			NpcManager = new NPCManager("Npcs");
 			CharacterManager = new CharacterManager("Characters");
+			WeaponLibraries = new List<WeaponLibrary>();
 		}
 
 
@@ -24,10 +28,10 @@ namespace DnD.Application.Game
 		{
 			//Save characters
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(CharacterManager));
-			FileStream fs = new FileStream(fileName,FileMode.Create);
+			FileStream fs = new FileStream(fileName+"_Characters",FileMode.Create);
 			xmlSerializer.Serialize(fs,CharacterManager);
 			fs.Close();
-			CharacterManager = null;
+			
 
 		}
 

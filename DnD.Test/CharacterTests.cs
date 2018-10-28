@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DnD.Application;
+using DnD.Application.Effects;
 using DnD.Application.EntityStats;
 using DnD.Application.EntityStats.AbilityStats;
 using DnD.Application.Game;
+using DnD.Application.Items;
 
 namespace DnD.Test
 {
@@ -71,6 +74,86 @@ namespace DnD.Test
 			Assert.AreEqual(6,talen.Dexterity.Modifier() + talen.ProficiencyBonus);
 		}
 
+		[TestMethod]
+		public void TestNewWeapon()
+		{
+			RangedWeapon longBow=new RangedWeapon(){Name = "Longbow"};
+			longBow.WeaponDamages.Add(new Damage()
+			{
+				DefaultDamage = 4,
+				QuantityOfDice = 1,
+				SidesOfDice = 8,
+				DamageType = "Piercing"
+			});
+			Character talen = new Character(10, 17, 13, 15, 12, 8)
+			{
+				Alignment = "Neutral",
+				Name = "Talen Il'Marin",
+				ArmorClass = 15,
+				Class = "Ranger: Horizon Walker",
+				HitPoints = 39,
+				CurrentHitPoints = 39,
+				Race = "High Elf",
+				ProficiencyBonus = 3,
+				Speed = 30,
+				ExperiencePoints = 6500
+			};
+			talen.Weapons.Add(longBow);
+
+			Assert.AreEqual(1,talen.Weapons.Count);
+		}
+
+		[TestMethod]
+		public void TestAttack()
+		{
+
+			Character talen = new Character(10, 17, 13, 15, 12, 8)
+			{
+				Alignment = "Neutral",
+				Name = "Talen Il'Marin",
+				ArmorClass = 15,
+				Class = "Ranger: Horizon Walker",
+				HitPoints = 39,
+				CurrentHitPoints = 39,
+				Race = "High Elf",
+				ProficiencyBonus = 3,
+				Speed = 30,
+				ExperiencePoints = 6500
+			};
+			RangedWeapon longBow = new RangedWeapon()
+			{
+				Name = "Longbow"
+				,
+				WeaponType = "Martial Ranged",
+				AmmunitionType = "Arrow",
+				CloseRange = 150,
+				MaxRange = 600,
+				Cost = new CoinPurse() { Gold = 50 },
+				Weight = 2,
+				Properties = new[] { "heavy", "two-handed" }
+			};
+			longBow.WeaponDamages.Add(new Damage()
+			{
+				DefaultDamage = 4,
+				QuantityOfDice = 1,
+				SidesOfDice = 8,
+				DamageType = "Piercing"
+			});			
+			Ammunition arrows = new Ammunition() { AmmunitionType = "Arrow", Name = "Special Arrow", Quantity = 20 };
+			arrows.Damages.Add(new Damage()
+			{
+				DamageType = "force",
+				QuantityOfDice = 1,
+				SidesOfDice = 8
+			});
+			talen.Weapons.Add(longBow);
+			talen.Ammunition.Add(arrows);
+			var ammo = talen.Ammunition.ElementAt(0);
+			DamageRealized attack = ((RangedWeapon)talen.Weapons.ElementAt(0)).WeaponHit(ref ammo);
+			Console.WriteLine(attack.DamageDescription);
+
+
+		}
 
 		[TestMethod]
 		public void TestSave()
@@ -101,7 +184,50 @@ namespace DnD.Test
 				CurrentHitPoints = 40,
 				ExperiencePoints = 6500
 			};
+			RangedWeapon longBow = new RangedWeapon()
+			{
+				Name = "Longbow"
+				,
+				WeaponType = "Martial Ranged",
+				AmmunitionType = "Arrow",
+				CloseRange = 150,
+				MaxRange = 600,
+				Cost = new CoinPurse() { Gold = 50 },
+				Weight = 2,
+				Properties = new[] { "heavy", "two-handed" }
+			};
+			longBow.WeaponDamages.Add(new Damage()
+			{
+				DefaultDamage = 4,
+				QuantityOfDice = 1,
+				SidesOfDice = 8,
+				DamageType = "Piercing"
+			});
+			Weapon rapier = new Weapon()
+				{
+					Name = "Rapier",
+					WeaponType = "Martial Melee",
+					Cost = new CoinPurse() { Gold = 25},
+					Weight = 2,
+					Properties = new []{"finesse"}
 
+				};
+			rapier.WeaponDamages.Add(new Damage()
+			{
+				DamageType = "piercing",
+				QuantityOfDice = 1,
+				SidesOfDice = 8
+			});
+			Ammunition arrows = new Ammunition() { AmmunitionType = "Arrow", Name = "Special Arrow", Quantity = 20 };
+			arrows.Damages.Add(new Damage()
+			{
+				DamageType = "force",
+				QuantityOfDice = 1,
+				SidesOfDice = 8
+			});
+			talen.Weapons.Add(longBow);
+			talen.Ammunition.Add(arrows);
+			kethra.Weapons.Add(rapier);
 			GameManager game = new GameManager();
 			game.CharacterManager.AddCharacter(talen);
 			game.CharacterManager.AddCharacter(kethra);
@@ -115,24 +241,13 @@ namespace DnD.Test
 		{
 			//Arrange
 			GameManager game = new GameManager();
-			Character kethra = new Character(19, 16, 16, 14, 14, 9)
-			{
-				Name = "Kethra",
-				Race = "Human",
-				Alignment = "Neutral",
-				ArmorClass = 14,
-				Class = "Rouge: Thief",
-				Speed = 30,
-				ProficiencyBonus = 3,
-				HitPoints = 40,
-				ExperiencePoints = 6500
-			};
+
 			//Act
 			game.LoadGame(@"C:\Users\camos\Documents\D&D\Characters.xml");
 
 			//Assert
 			Assert.AreEqual("Talen Il'Marin", game.CharacterManager.Characters[0].Name);
-			
+			Assert.AreEqual(1,game.CharacterManager.Characters[0].Weapons.Count);
 		
 
 		}

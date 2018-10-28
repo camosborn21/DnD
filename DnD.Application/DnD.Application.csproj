@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\Damage.cs" />
+    <Compile Include="Effects\DamageRealized.cs" />
     <Compile Include="EntityStats\AbilityStats\AbilityTemplate.cs" />
     <Compile Include="EntityStats\AbilityStats\Charisma.cs" />
     <Compile Include="EntityStats\AbilityStats\Constitution.cs" />
@@ -53,9 +55,15 @@
     <Compile Include="EntityStats\Creature.cs" />
     <Compile Include="EntityStats\Entity.cs" />
     <Compile Include="Game\CharacterManager.cs" />
+    <Compile Include="Game\EncounterManager.cs" />
     <Compile Include="Game\GameManager.cs" />
+    <Compile Include="Game\LibraryManager.cs" />
     <Compile Include="Game\NPCManager.cs" />
+    <Compile Include="Items\Ammunition.cs" />
     <Compile Include="Items\CoinPurse.cs" />
+    <Compile Include="Items\RangedWeapon.cs" />
+    <Compile Include="Items\Weapon.cs" />
+    <Compile Include="Libraries\WeaponLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

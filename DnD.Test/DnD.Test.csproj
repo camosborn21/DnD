@@ -51,6 +51,7 @@
     <Compile Include="CharacterTests.cs" />
     <Compile Include="DiceBagTests.cs" />
     <Compile Include="ItemTests.cs" />
+    <Compile Include="LibraryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
