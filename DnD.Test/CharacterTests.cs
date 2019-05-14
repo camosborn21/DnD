@@ -186,8 +186,7 @@ namespace DnD.Test
 			};
 			RangedWeapon longBow = new RangedWeapon()
 			{
-				Name = "Longbow"
-				,
+				Name = "Longbow",
 				WeaponType = "Martial Ranged",
 				AmmunitionType = "Arrow",
 				CloseRange = 150,
